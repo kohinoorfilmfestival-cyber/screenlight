@@ -158,37 +158,35 @@ contactForm.addEventListener('submit', (e) => {
 // ====================================
 const newsletterForm = document.querySelector('.newsletter-form');
 
-newsletterForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const emailInput = newsletterForm.querySelector('input[type="email"]');
-    const email = emailInput.value;
-    
-    if (email) {
-        // Create temporary success message
-        const originalHTML = newsletterForm.innerHTML;
-        newsletterForm.innerHTML = `
-            <div style="
-                color: #00D4FF;
-                text-align: center;
-                padding: 15px;
-                animation: fadeInUp 0.5s ease;
-            ">
-                ✓ Subscribed successfully!
-            </div>
-        `;
-        
-        // Reset after 3 seconds
-        setTimeout(() => {
-            newsletterForm.innerHTML = originalHTML;
-            // Re-attach event listener
-            newsletterForm.addEventListener('submit', arguments.callee);
-        }, 3000);
-        
-        // Log email (in production, this would be sent to a server)
-        console.log('Newsletter subscription:', email);
-    }
-});
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const emailInput = newsletterForm.querySelector('input[type="email"]');
+        const email = emailInput.value;
+
+        if (email) {
+            const originalHTML = newsletterForm.innerHTML;
+
+            newsletterForm.innerHTML = `
+                <div style="
+                    color: #00D4FF;
+                    text-align: center;
+                    padding: 15px;
+                ">
+                    ✓ Subscribed successfully!
+                </div>
+            `;
+
+            setTimeout(() => {
+                newsletterForm.innerHTML = originalHTML;
+            }, 3000);
+
+            console.log('Newsletter subscription:', email);
+        }
+    });
+}
+
 
 // ====================================
 // Counter Animation for Stats
@@ -228,72 +226,78 @@ const statsObserver = new IntersectionObserver((entries) => {
 if (statsSection) {
     statsObserver.observe(statsSection);
 }
+document.addEventListener('DOMContentLoaded', function () {
 
-// ====================================
-// Gallery Modal (Optional Enhancement)
-// ====================================
-const galleryItems = document.querySelectorAll('.gallery-item');
+    // ====================================
+    // Gallery Modal
+    // ====================================
+    const galleryItems = document.querySelectorAll('.gallery-item');
 
-galleryItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const img = item.querySelector('img');
-        const modal = document.createElement('div');
-        modal.className = 'gallery-modal';
-        modal.innerHTML = `
-            <div style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.95);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10000;
-                cursor: pointer;
-                animation: fadeIn 0.3s ease;
-            " onclick="this.parentElement.remove()">
-                <img src="${img.src}" style="
-                    max-width: 90%;
-                    max-height: 90vh;
-                    border-radius: 10px;
-                    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5);
-                    animation: scaleIn 0.3s ease;
-                ">
-                <button style="
-                    position: absolute;
-                    top: 30px;
-                    right: 30px;
-                    background: none;
-                    border: none;
-                    color: white;
-                    font-size: 40px;
-                    cursor: pointer;
-                    width: 50px;
-                    height: 50px;
+    galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            const modal = document.createElement('div');
+            modal.className = 'gallery-modal';
+            modal.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.95);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.1);
-                    transition: all 0.3s ease;
-                " onmouseover="this.style.background='rgba(0, 212, 255, 0.3)'" 
-                   onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'">
-                    ×
-                </button>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        document.body.style.overflow = 'hidden';
-        
-        modal.addEventListener('click', () => {
-            modal.remove();
-            document.body.style.overflow = 'auto';
+                    z-index: 10000;
+                    cursor: pointer;
+                ">
+                    <img src="${img.src}" style="
+                        max-width: 90%;
+                        max-height: 90vh;
+                        border-radius: 10px;
+                    ">
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+
+            modal.addEventListener('click', () => {
+                modal.remove();
+                document.body.style.overflow = 'auto';
+            });
         });
     });
+
+    // ====================================
+    // Gallery Filter
+    // ====================================
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterableItems = document.querySelectorAll('.gallery-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filterValue = button.getAttribute('data-filter');
+
+            filterableItems.forEach(item => {
+                const itemYear = item.getAttribute('data-year');
+
+                if (filterValue === 'all' || itemYear === filterValue) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+
 });
+
 
 // ====================================
 // Parallax Effect for Hero Section
