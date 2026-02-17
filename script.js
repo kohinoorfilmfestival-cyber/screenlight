@@ -104,91 +104,6 @@ animateElements.forEach(el => {
 });
 
 // ====================================
-// Contact Form Handling
-// ====================================
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
-    
-    // Simple validation
-    if (name && email && subject && message) {
-        // Create success message
-        const successMessage = document.createElement('div');
-        successMessage.className = 'success-message';
-        successMessage.innerHTML = `
-            <div style="
-                background: linear-gradient(135deg, #00D4FF, #FF8C00);
-                color: white;
-                padding: 20px;
-                border-radius: 10px;
-                margin-top: 20px;
-                text-align: center;
-                animation: fadeInUp 0.5s ease;
-            ">
-                <h4 style="margin-bottom: 10px;">Message Sent Successfully! ✓</h4>
-                <p style="margin: 0;">Thank you for contacting us. We'll get back to you soon.</p>
-            </div>
-        `;
-        
-        // Insert message after form
-        contactForm.appendChild(successMessage);
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Remove success message after 5 seconds
-        setTimeout(() => {
-            successMessage.remove();
-        }, 5000);
-        
-        // Log form data (in production, this would be sent to a server)
-        console.log('Form submitted:', { name, email, subject, message });
-    }
-});
-
-// ====================================
-// Newsletter Form Handling
-// ====================================
-const newsletterForm = document.querySelector('.newsletter-form');
-
-if (newsletterForm) {
-    newsletterForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const emailInput = newsletterForm.querySelector('input[type="email"]');
-        const email = emailInput.value;
-
-        if (email) {
-            const originalHTML = newsletterForm.innerHTML;
-
-            newsletterForm.innerHTML = `
-                <div style="
-                    color: #00D4FF;
-                    text-align: center;
-                    padding: 15px;
-                ">
-                    ✓ Subscribed successfully!
-                </div>
-            `;
-
-            setTimeout(() => {
-                newsletterForm.innerHTML = originalHTML;
-            }, 3000);
-
-            console.log('Newsletter subscription:', email);
-        }
-    });
-}
-
-
-// ====================================
 // Counter Animation for Stats
 // ====================================
 const statsSection = document.querySelector('.hero-stats');
@@ -335,29 +250,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ====================================
-// Lazy Loading Images
-// ====================================
-const images = document.querySelectorAll('img[src]');
-const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.5s ease';
-            
-            img.onload = () => {
-                img.style.opacity = '1';
-            };
-            
-            imageObserver.unobserve(img);
-        }
-    });
-});
 
-images.forEach(img => {
-    imageObserver.observe(img);
-});
 
 // ====================================
 // Console Welcome Message
