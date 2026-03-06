@@ -191,7 +191,7 @@ a {
 .hero-subtitle {
     display: inline-block;
     color: var(--primary-color);
-    font-size: 4rem;
+    font-size: 3rem;
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 20px;
